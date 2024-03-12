@@ -6,11 +6,11 @@ import org.example.pojo.User;
 import org.example.service.UserService;
 import org.example.utils.JwtUtil;
 import org.example.utils.Md5Util;
+import org.example.utils.ThreadLocalUtil;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,5 +56,24 @@ public class UserController {
         }
 
         return Result.error("密码错误");
+    }
+
+    @GetMapping("/userInfo")
+    public Result<User> userInfo() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        User user = userService.findByUsername((String) map.get("username"));
+        return Result.success(user);
+    }
+
+    @PutMapping("/update")
+    public Result update(@RequestBody @Validated User user) {
+        userService.update(user);
+        return Result.success();
+    }
+
+    @PatchMapping("/updateAvatar")
+    public Result updateAvatar(@RequestParam @URL String avatarUrl) {
+        userService.updateAvatar(avatarUrl);
+        return Result.success();
     }
 }
