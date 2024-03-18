@@ -1,45 +1,59 @@
 package org.example.service.impl;
 
-import org.example.mapper.UserMapper;
-import org.example.pojo.User;
+import org.example.domain.UserDO;
+import org.example.pojo.user.UserInfoDTO;
+import org.example.repository.UserRepository;
 import org.example.service.UserService;
 import org.example.utils.Md5Util;
-import org.example.utils.ThreadLocalUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
     @Override
-    public User findByUsername(String username) {
-        User u = userMapper.findByUsername(username);
+    public UserDO findByUsername(String username) {
+        UserDO u = userRepository.findByUsername(username);
         return u;
     }
 
     @Override
-    public void register(String username, String password) {
+    public UserDO register(String username, String password) {
         // 加密
         String md5String = Md5Util.getMd5String(password);
-        userMapper.add(username, md5String);
+        UserDO userDO = new UserDO();
+        userDO.setUsername(username);
+        userDO.setPassword(md5String);
+        logger.info("crate user {}", userDO.toString());
+        return userRepository.save(userDO);
     }
 
     @Override
-    public void update(User user) {
-        user.setUpdateTime(LocalDateTime.now());
-        userMapper.update(user);
+    public Optional<UserDO> findById(Long id) {
+        Optional<UserDO> user = userRepository.findById(id);
+        return user;
     }
 
-    @Override
-    public void updateAvatar(String avatarUrl) {
-        Map<String, Object> map = ThreadLocalUtil.get();
-        Integer id = (Integer) map.get("id");
-        userMapper.updateAvatar(avatarUrl, id);
-    }
+//
+//    @Override
+//    public void update(User user) {
+//        user.setUpdateTime(LocalDateTime.now());
+//        userMapper.update(user);
+//    }
+//
+//    @Override
+//    public void updateAvatar(String avatarUrl) {
+//        Map<String, Object> map = ThreadLocalUtil.get();
+//        Integer id = (Integer) map.get("id");
+//        userRepository.updateAvatar(avatarUrl, id);
+//    }
 }

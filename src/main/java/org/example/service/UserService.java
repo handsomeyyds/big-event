@@ -1,15 +1,17 @@
 package org.example.service;
 
-import org.example.pojo.User;
+import org.example.domain.UserDO;
+import org.example.pojo.user.UserInfoDTO;
+
+import java.util.Optional;
 
 public interface UserService {
     // 根据用户名查询用户
-    User findByUsername(String username);
+    UserDO findByUsername(String username);
 
-    // 注册
-    void register(String username, String password);
+    //    // 注册
+    UserDO register(String username, String password);
 
-    void update(User user);
+    Optional<UserDO> findById(Long id);
 
-    void updateAvatar(String avatarUrl);
 }
