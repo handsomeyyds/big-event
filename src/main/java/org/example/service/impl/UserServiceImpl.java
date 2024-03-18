@@ -1,7 +1,6 @@
 package org.example.service.impl;
 
 import org.example.domain.UserDO;
-import org.example.pojo.user.UserInfoDTO;
 import org.example.repository.UserRepository;
 import org.example.service.UserService;
 import org.example.utils.Md5Util;
@@ -43,17 +42,4 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-//
-//    @Override
-//    public void update(User user) {
-//        user.setUpdateTime(LocalDateTime.now());
-//        userMapper.update(user);
-//    }
-//
-//    @Override
-//    public void updateAvatar(String avatarUrl) {
-//        Map<String, Object> map = ThreadLocalUtil.get();
-//        Integer id = (Integer) map.get("id");
-//        userRepository.updateAvatar(avatarUrl, id);
-//    }
 }

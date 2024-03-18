@@ -13,5 +13,4 @@ public interface UserService {
     UserDO register(String username, String password);
 
     Optional<UserDO> findById(Long id);
-
 }

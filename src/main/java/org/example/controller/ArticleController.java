@@ -13,4 +13,5 @@ public class ArticleController {
     public Result<String> list() {
         return Result.success("所有文章数据");
     }
+
 }
